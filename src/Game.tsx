@@ -70,7 +70,6 @@ class Game extends React.Component <IProps, IStats> {
     const history = this.state.history;
     const squares = this.state.currentSquares.slice();
 
-    const winnerFound = this.winnerIsFound(squares)?`Winner is ${this.winnerIsFound(squares)}`:'';
     return (
       <div className="game">
         <div className="game-board">
@@ -78,10 +77,10 @@ class Game extends React.Component <IProps, IStats> {
             squares={this.state.currentSquares} 
             onClick = {(i: number)=>this.handleClick(i)}
             nextMove = {this.state.isNext?'X':'O'}
+            winnerFound = {this.winnerIsFound(this.state.currentSquares)}
           />
         </div>
         <div className="game-info">
-          {winnerFound}
           History
           <div>{/* status */}</div>
           <div>
