@@ -4,6 +4,7 @@ import Square from "./Square";
 interface IProps {
   squares: string[]
   onClick: Function
+  nextMove: string
 }
 
 interface IStats {
@@ -24,7 +25,7 @@ class Board extends React.Component <IProps, any> {
   }
 
   render() {
-    const status = "Next player: X";
+    const status = `Next player: ${this.props.nextMove}`;
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     return (

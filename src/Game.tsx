@@ -24,36 +24,69 @@ class Game extends React.Component <IProps, IStats> {
   handleClick(i: number) {
     const history = this.state.history;
     const squares = this.state.currentSquares.slice();
-    squares[i] = this.state.isNext?'X':'O';
+    
+    // if winner is found, end game? 
+    // if winner have not found, keep adding squares, history, and is next
+    // and if squares i is empty
+    if(!this.winnerIsFound(squares) && !squares[i]){
+      squares[i] = this.state.isNext?'X':'O';
+      this.setState({
+        currentSquares: squares,
+        history: history.concat([{squares}]),
+        isNext:  !this.state.isNext
+      });
+      console.log('here')
+    }
+    
+  }
 
-    this.setState({
-      currentSquares: squares,
-      history: history.concat([{squares}]),
-      isNext:  !this.state.isNext
-    });
-    console.log(this.state.history)
+  winnerIsFound(currentSquares: Array<string>){
+    const defineWin = 
+    [
+      [2,4,6],
+      [0,4,8],
+      [2,5,8],
+      [1,4,7],
+      [0,3,6],
+      [0,1,2],
+      [3,4,5],
+      [6,7,8]
+    ]
+
+    for (let i=0;i<defineWin.length; i++){
+      const a = defineWin[i][0];
+      const b = defineWin[i][1];
+      const c = defineWin[i][2];
+
+      if (currentSquares[a] && currentSquares[a] === currentSquares[b] && currentSquares[c] === currentSquares[b]){
+        // what to show if winner is found?
+
+        return currentSquares[a];
+      } 
+    }
   }
 
   render() {
     const history = this.state.history;
-    const listHistory = history.map((element, index) => {
-      console.log(index);
-      console.log(element);
-      return <li key={index}>{index}</li>;
-    })
+    const squares = this.state.currentSquares.slice();
+
+    const winnerFound = this.winnerIsFound(squares)?`Winner is ${this.winnerIsFound(squares)}`:'';
     return (
       <div className="game">
         <div className="game-board">
-          <Board squares={this.state.currentSquares} onClick = {(i: number)=>this.handleClick(i)}/>
+          <Board 
+            squares={this.state.currentSquares} 
+            onClick = {(i: number)=>this.handleClick(i)}
+            nextMove = {this.state.isNext?'X':'O'}
+          />
         </div>
         <div className="game-info">
+          {winnerFound}
           History
           <div>{/* status */}</div>
           <div>
           <ol>
             {this.state.history.map((element, index) => {
-              console.log(index);
-              console.log(element);
               return <li key={index}>{index}</li>;
             })}
           </ol>
